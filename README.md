@@ -1,2 +1,2 @@
 # just-proxy
-simple just dice proxy (alpha)
+simple just-dice proxy (alpha)
