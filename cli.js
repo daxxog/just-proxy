@@ -5,6 +5,16 @@
  * http://www.apache.org/licenses/LICENSE-2.0.html  
  */
 
-var JustProxy = require('./just-proxy.min.js');
+var express = require('express'),
+    app = express(),
+    server = require('http').Server(app),
+    JustProxy = require('./just-proxy.min.js');
 
-new JustProxy();
+app.use('/', JustProxy);
+
+server.listen(process.env.PORT ? process.env.PORT : 80, function() {
+    var host = process.env.HOST ? process.env.HOST : '0.0.0.0',
+        port = server.address().port;
+    
+    console.log('JustProxy listening at http://%s:%s', host, port);
+});

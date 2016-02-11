@@ -20,7 +20,28 @@
         root.JustProxy = factory();
   }
 }(this, function() {
-    var JustProxy;
+    var S = require('string'),
+        request = require('request'),
+        express = require('express'),
+        app = express.Router();
     
-    return JustProxy;
+    app.get('/user/:uid', function(req, res) {
+        var uid = S(req.params.uid);
+        
+        res.set('Content-Type', 'application/json');
+        
+        if(uid.isNumeric()) {
+            request('https://just-dice.com/user/' + uid, function(err, reqres) {
+                if(!err && reqres.statusCode == 200) {
+                    res.send(reqres.body);
+                } else {
+                    res.status(500).send('"error"');
+                }
+            });
+        } else {
+            res.status(400).send('"uid must be numeric"');
+        }
+    });
+    
+    return app;
 }));
